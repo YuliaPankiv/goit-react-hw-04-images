@@ -1,7 +1,10 @@
 import ImageGalleryItem from 'components/ItemImageGallery/ImageGalleryItem';
 import Loader from 'components/Loader/Loader';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { getImages } from 'services/getImages';
+import Button from 'components/Button/Button';
 
 export default class ImageGallery extends Component {
   state = {
@@ -24,7 +27,6 @@ export default class ImageGallery extends Component {
 
   render() {
     const { images, error, isLoading } = this.state;
-    console.log(error);
 
     // if (status === 'pending') return <Loader />;
     // else if (status === 'fulfilled') {
@@ -42,25 +44,29 @@ export default class ImageGallery extends Component {
     //     </ul>
     //   );
     // } else if (status === 'rejected') return <div>{error}</div>;
-
     return (
       <>
         {error && <h1>Image is not</h1>}
         {isLoading && <Loader />}
-        {!images && <div>input search</div>}
         {images && (
-          <ul className="ImageGallery">
-            {images.hits.map(images => (
-              <ImageGalleryItem
-                key={images.id}
-                src={images.webformatURL}
-                tags={images.tags}
-                largeImg={images.largeImageURL}
-              />
-            ))}
-          </ul>
+          <>
+            <ul className="ImageGallery">
+              {images.hits.map(images => (
+                <ImageGalleryItem
+                  key={images.id}
+                  src={images.webformatURL}
+                  tags={images.tags}
+                  largeImg={images.largeImageURL}
+                />
+              ))}
+            </ul>
+            <Button onSubmit={getImages}>Load more</Button>
+          </>
         )}
       </>
     );
   }
 }
+ImageGallery.propTypes = {
+  value: PropTypes.string.isRequired,
+};

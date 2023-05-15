@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-
+import { ReactComponent as SearchSvg } from '../icons/search.svg';
+import IconButton from 'components/Button/IconButton';
 export default class Searchbar extends Component {
   state = {
     search: '',
@@ -23,13 +24,14 @@ export default class Searchbar extends Component {
     return (
       <header className="Searchbar">
         <form className="SearchForm" onSubmit={this.handleOnSubmit}>
-          <button
-            type="submit"
+          <IconButton
             className="SearchForm-button"
             onSubmit={this.handleOnSubmit}
+            aria-label="search images"
           >
-            <span className="SearchForm-button-label ">Search</span>
-          </button>
+            <SearchSvg />
+            {/* <span className="SearchForm-button-label "></span> */}
+          </IconButton>
 
           <input
             className="SearchForm-input"
