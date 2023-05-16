@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { toast } from 'react-toastify';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { ReactComponent as SearchSvg } from '../icons/search.svg';
 import IconButton from 'components/Button/IconButton';
 export default class Searchbar extends Component {
@@ -14,7 +14,7 @@ export default class Searchbar extends Component {
   handleOnSubmit = e => {
     e.preventDefault();
     if (this.state.search.trim() === '') {
-      alert('please write your fetch');
+      Notify.info('The input field is empty!');
       return;
     }
     this.props.onSubmit(this.state.search);
@@ -30,7 +30,6 @@ export default class Searchbar extends Component {
             aria-label="search images"
           >
             <SearchSvg />
-            {/* <span className="SearchForm-button-label "></span> */}
           </IconButton>
 
           <input

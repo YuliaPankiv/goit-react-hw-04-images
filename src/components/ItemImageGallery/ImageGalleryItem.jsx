@@ -19,6 +19,8 @@ class ImageGalleryItem extends Component {
             className="ImageGalleryItem-image"
             src={this.props.src}
             alt={this.props.tags}
+            width={this.props.width}
+            height={this.props.height}
           />
         </li>
         {this.state.showModal && (

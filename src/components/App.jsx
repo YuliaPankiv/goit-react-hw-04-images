@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Searchbar from './formSearchbar/Searchbar';
 import ImageGallery from './gallery/ImageGallery';
-
 export class App extends Component {
   state = {
     searchValue: '',
+    
   };
 
   handleSubmit = search => {
@@ -16,7 +16,7 @@ export class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery value={searchValue} />
+        <ImageGallery value={searchValue}  />
       </div>
     );
   }
