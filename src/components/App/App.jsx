@@ -22,7 +22,7 @@ export class App extends Component {
   componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
     if (prevState.query !== query || prevState.page !== page) {
-      this.setState({ images: [], isLoading: true });
+      this.setState({ isLoading: true });
       this.fetchImages(prevState);
     }
   }
@@ -47,7 +47,7 @@ export class App extends Component {
     }
   };
   handleSubmitSearchForm = value => {
-    this.setState({ query: value, page: 1 });
+    this.setState({ query: value, page: 1, images: [] });
   };
 
   handleLoadMore = () => {
