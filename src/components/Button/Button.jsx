@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
+import { ButtonLoadMore } from './ButtonLoadMore.syled';
 
 const Button = ({ children, onClick }) => {
   return (
-    <button className="Button" onClick={onClick}>
+    <ButtonLoadMore className="Button" onClick={onClick}>
       {children}
-    </button>
+    </ButtonLoadMore>
   );
 };
 Button.defaultProps = {

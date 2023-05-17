@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
+import { IconButtonWrap } from './IconButton.styled';
 
 const IconButton = ({ children, onSubmit, ...allyProps }) => {
   return (
-    <button type="submit" onSubmit={onSubmit} {...allyProps}>
+    <IconButtonWrap type="submit" onSubmit={onSubmit} {...allyProps}>
       {children}
-    </button>
+    </IconButtonWrap>
   );
 };
 IconButton.defaultProps = {

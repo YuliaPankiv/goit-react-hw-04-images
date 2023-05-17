@@ -7,3 +7,5 @@ export const getImages = (searchValue, page) => {
     .then(res => res.json())
     .catch(error => error.message);
 };
+const ImgApi = { getImages };
+export default ImgApi;

@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { ReactComponent as SearchSvg } from '../icons/search.svg';
 import IconButton from 'components/Button/IconButton';
+import {
+  SearchForm,
+  SearchFormInput,
+  SearchFormWrap,
+} from './Searchbar.styled';
 export default class Searchbar extends Component {
   state = {
     search: '',
@@ -22,8 +27,8 @@ export default class Searchbar extends Component {
   };
   render() {
     return (
-      <header className="Searchbar">
-        <form className="SearchForm" onSubmit={this.handleOnSubmit}>
+      <SearchFormWrap>
+        <SearchForm onSubmit={this.handleOnSubmit}>
           <IconButton
             className="SearchForm-button"
             onSubmit={this.handleOnSubmit}
@@ -32,15 +37,14 @@ export default class Searchbar extends Component {
             <SearchSvg />
           </IconButton>
 
-          <input
-            className="SearchForm-input"
+          <SearchFormInput
             type="text"
             placeholder="Search images and photos"
             value={this.state.search}
             onChange={this.handleSearchChange}
           />
-        </form>
-      </header>
+        </SearchForm>
+      </SearchFormWrap>
     );
   }
 }

@@ -1,42 +1,44 @@
 import Modal from 'components/modal/Modal';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import {
+  ImageGalleryItemImage,
+  ImageGalleryItemWrap,
+} from './ImageGalleryItemWrap.styled';
 
-class ImageGalleryItem extends Component {
-  state = {
-    showModal: false,
-  };
+export class ImageGalleryItem extends Component {
+  state = { showModal: false };
 
   toggleModal = () => {
     this.setState(prev => ({ showModal: !prev.showModal }));
   };
-
+  openModal = () => {
+    this.setState({ showModal: true });
+  };
   render() {
+    const { webformatURL, largeImageURL, id } = this.props;
     return (
       <>
-        <li className="ImageGalleryItem" onClick={this.toggleModal}>
-          <img
+        <ImageGalleryItemWrap key={webformatURL}>
+          <ImageGalleryItemImage
             className="ImageGalleryItem-image"
-            src={this.props.src}
-            alt={this.props.tags}
-            width={this.props.width}
-            height={this.props.height}
+            src={webformatURL}
+            alt={id}
+            onClick={this.openModal}
           />
-        </li>
+        </ImageGalleryItemWrap>
+
         {this.state.showModal && (
           <Modal onClose={this.toggleModal}>
-            <img src={this.props.largeImg} alt={this.props.tags} />
+            <img src={largeImageURL} alt={id} />
           </Modal>
         )}
       </>
     );
   }
 }
-
-ImageGalleryItem.propTypes = {
-  src: PropTypes.string.isRequired,
-  largeImg: PropTypes.string.isRequired,
-  tags: PropTypes.string.isRequired,
+ImageGalleryItem.propType = {
+  webformatURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired.isRequired,
 };
-
-export default ImageGalleryItem;
