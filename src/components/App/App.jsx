@@ -51,12 +51,7 @@ export class App extends Component {
   };
 
   handleLoadMore = () => {
-    this.setState(
-      prevState => ({ page: prevState.page + 1 }),
-      () => {
-        this.fetchImages();
-      }
-    );
+    this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
   render() {
