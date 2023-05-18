@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { AppWrap } from './App.styled';
@@ -17,6 +16,7 @@ export class App extends Component {
     error: null,
     page: 1,
     totalImages: null,
+    showLoadMoreButton: false,
   };
 
   componentDidUpdate(_, prevState) {
@@ -28,7 +28,7 @@ export class App extends Component {
   }
 
   fetchImages = async () => {
-    const { query, page, images } = this.state;
+    const { query, page, images, isLoading } = this.state;
     try {
       const res = await ImgApi.getImages(query, page);
       const { hits, total } = res;
@@ -36,18 +36,24 @@ export class App extends Component {
         isLoading: false,
         totalImages: total,
         images: [...prevState.images, ...hits],
+        showLoadMoreButton: true,
       }));
-
       if (total === 0 && images.length === 0) {
         Notify.info(`No images were found for the query "${query}".`);
+      }
+      if (hits.length < total && !isLoading && hits.length > 0) {
+        this.setState({ showLoadMoreButton: true });
+      } else {
+        this.setState({ showLoadMoreButton: false });
       }
     } catch (error) {
       console.error('Error:', error);
       this.setState({ error, isLoading: false });
     }
   };
+
   handleSubmitSearchForm = value => {
-    this.setState({ query: value, page: 1, images: [] });
+    this.setState({ images: [], query: value, page: 1 });
   };
 
   handleLoadMore = () => {
@@ -55,13 +61,13 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading, totalImages } = this.state;
-    const showLoadMoreButton = images.length > 0 && images.length < totalImages;
+    const { images, isLoading, showLoadMoreButton } = this.state;
     return (
       <AppWrap>
         <Searchbar onSubmit={this.handleSubmitSearchForm} />
         {isLoading && <Loader />}
-        <ImageGallery images={images} />
+
+        {images.length > 0 && <ImageGallery images={images} />}
         {showLoadMoreButton && (
           <Button onClick={this.handleLoadMore}>Load more</Button>
         )}
@@ -69,6 +75,3 @@ export class App extends Component {
     );
   }
 }
-App.propType = {
-  value: PropTypes.string.isRequired,
-};
