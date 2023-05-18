@@ -32,16 +32,23 @@ export class App extends Component {
     try {
       const res = await ImgApi.getImages(query, page);
       const { hits, total } = res;
+      const countPage = Math.ceil(total / 12);
+
       this.setState(prevState => ({
         isLoading: false,
         totalImages: total,
         images: [...prevState.images, ...hits],
-        showLoadMoreButton: true,
       }));
+
       if (total === 0 && images.length === 0) {
         Notify.info(`No images were found for the query "${query}".`);
       }
-      if (hits.length < total && !isLoading && hits.length > 0) {
+      if (
+        hits.length > 0 &&
+        hits.length < total &&
+        !isLoading &&
+        countPage !== page
+      ) {
         this.setState({ showLoadMoreButton: true });
       } else {
         this.setState({ showLoadMoreButton: false });
