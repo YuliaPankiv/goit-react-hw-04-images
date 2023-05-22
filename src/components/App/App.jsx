@@ -37,18 +37,14 @@ export class App extends Component {
       this.setState(prevState => ({
         isLoading: false,
         totalImages: total,
+        showLoadMoreButton: false,
         images: [...prevState.images, ...hits],
       }));
 
       if (total === 0 && images.length === 0) {
         Notify.info(`No images were found for the query "${query}".`);
       }
-      if (
-        hits.length > 0 &&
-        hits.length < total &&
-        !isLoading &&
-        countPage !== page
-      ) {
+      if (hits.length > 0 && hits.length < total && countPage !== page) {
         this.setState({ showLoadMoreButton: true });
       } else {
         this.setState({ showLoadMoreButton: false });
@@ -72,10 +68,10 @@ export class App extends Component {
     return (
       <AppWrap>
         <Searchbar onSubmit={this.handleSubmitSearchForm} />
+        {images.length > 0 && <ImageGallery images={images} />}
         {isLoading && <Loader />}
 
-        {images.length > 0 && <ImageGallery images={images} />}
-        {showLoadMoreButton && (
+        {!isLoading && showLoadMoreButton && (
           <Button onClick={this.handleLoadMore}>Load more</Button>
         )}
       </AppWrap>
