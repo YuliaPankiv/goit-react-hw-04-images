@@ -106,4 +106,4 @@ class ImageGallery extends Component {
   }
 }
 
-export { ImageGallery };
+export default ImageGallery;

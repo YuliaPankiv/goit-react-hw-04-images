@@ -1,6 +1,4 @@
-import Modal from 'components/modal/Modal';
-import { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   ImageGalleryItemImage,
   ImageGalleryItemWrap,
@@ -24,8 +22,13 @@ export const ImageGalleryItem = ({ images, openModal }) => {
     });
   }
 };
-// ImageGalleryItem.propType = {
-//   webFormatURL: PropTypes.string.isRequired,
-//   largeImageURL: PropTypes.number.isRequired,
-//   id: PropTypes.string.isRequired.isRequired,
-// };
+ImageGalleryItem.propType = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      webFormatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired.isRequired,
+    }).isRequired
+  ).isRequired,
+  openModal: PropTypes.func.isRequired,
+};
