@@ -7,10 +7,11 @@ export const getImagesApi = (q, page = 1) => {
     .get(BASE_URL, {
       params: {
         q,
+        page,
+
         key: API_KEY,
         per_page: 12,
         image_type: 'photo',
-        page,
       },
     })
     .then(res => res.data);
