@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
-import { Item, Image } from './ItemImageGallery.styled';
-import { useState } from 'react';
-import { Modal } from 'components/Modal/Modal';
+import { useState } from "react";
+import { Image, Item } from "./ItemImageGallery.styled";
+import { Modal } from "components/Modal/Modal";
 
 export const ItemImageGallery = ({ webformatURL, largeImageURL, tags }) => {
   const [showModal, setShowModal] = useState(false);
@@ -19,15 +18,4 @@ export const ItemImageGallery = ({ webformatURL, largeImageURL, tags }) => {
     </Item>
   );
 };
-{
-  /* ItemImageGallery.propType = {
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      webFormatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.number.isRequired,
-      id: PropTypes.string.isRequired.isRequired,
-    }).isRequired
-  ).isRequired,
-  openModal: PropTypes.func.isRequired,
-}; */
-}
+

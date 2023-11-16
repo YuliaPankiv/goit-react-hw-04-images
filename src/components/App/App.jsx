@@ -1,75 +1,65 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { AppWrap } from './App.styled';
-import Searchbar from 'components/Searchbar/Searchbar';
+import SearchBar from 'components/SearchBar/SearchBar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
 import { useEffect } from 'react';
-import { getImages } from 'services/pixabayAPI';
+import { fetchApi, getImages } from 'services/pixabayAPI';
 import { toast, ToastContainer } from 'react-toastify';
 import { getNormalizeImages } from 'helpers/normalizeImages';
-import Button from 'components/Button/Button';
 import Loader from 'components/Loader/Loader';
-const Status = {
-  IDLE: 'idle',
-  PENDING: 'pending',
-  RESOLVED: 'resolved',
-  REJECTED: 'rejected',
-};
+import { LoadMoreBtn } from 'components/LoadMoreBtn/LoadMoreBtn';
 
 export const App = () => {
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
   const [images, setImages] = useState([]);
-  const [status, setStatus] = useState(Status.IDLE);
+  const [page, setPage] = useState(1);
+  const [totalHits, setTotalHits] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showButton, setShowButton] = useState(false);
-  const changeQuery = query => {
-    setQuery(query);
-    setPage(1);
-    setImages([]);
-  };
+
   useEffect(() => {
-    if (query === '') {
+    if (!searchQuery) {
       return;
     }
-
-    const setGalleryImage = async () => {
-      setStatus(Status.PENDING);
-      setShowButton(false);
-      setError(null);
-      try {
-        const { hits, totalHits } = await getImages(query, page);
-        const maxPage = Math.ceil(totalHits / 12);
-
-        if (hits.length === 0) {
-          toast(`No images were found for the query "${query}".`);
-          return;
-        }
+    fetchApi(searchQuery, page)
+      .then(({hits, totalHits}) => {
         setImages(prevImages => [...prevImages, ...getNormalizeImages(hits)]);
+        setTotalHits(totalHits);
+      })
+      .catch(error => {
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [searchQuery, page]);
 
-        setStatus(Status.RESOLVED);
-        setShowButton(page < maxPage);
-      } catch (err) {
-        setStatus(Status.REJECTED);
-        setError(err.message);
-      }
-    };
-    setGalleryImage();
-  }, [page, query]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
+  const handleSubmitForm = query => {
+    if (searchQuery === query) {
+      return;
     }
-  }, [error]);
-
-  const handleClick = () => setPage(prev => prev + 1);
+    setImages([]);
+    setPage(1);
+    setLoading(true);
+    setSearchQuery(query);
+  };
+  const loadMore = () => {
+    setPage(prevPage => prevPage + 1);
+    setLoading(true);
+  };
+  // const handleClick = () => setPage(prev => prev + 1);
   return (
     <AppWrap>
-      <Searchbar onSubmit={changeQuery} />
-      {images.length > 0 && <ImageGallery images={images} />} <ToastContainer />
-      {showButton && <Button onClick={handleClick}>Load More</Button>}
-      {status === Status.PENDING && <Loader />}
+      <SearchBar onSubmit={handleSubmitForm} />
       <ToastContainer />
+      {loading && <Loader />}
+      {error && (
+        <h1 style={{ color: 'red', textAlign: 'center' }}>{error.message}</h1>
+      )}
+      {images.length > 0 && <ImageGallery images={images} />}
+      {images.length > 0 && images.length !== totalHits && (
+        <LoadMoreBtn onClick={loadMore} />
+      )}
     </AppWrap>
   );
 };

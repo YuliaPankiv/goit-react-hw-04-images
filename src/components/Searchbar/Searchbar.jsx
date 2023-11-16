@@ -1,14 +1,10 @@
 import { useState } from 'react';
 import { ReactComponent as SearchSvg } from '../../assets/search.svg';
 import IconButton from 'components/Button/IconButton';
-import {
-  SearchForm,
-  SearchFormInput,
-  SearchFormWrap,
-} from './Searchbar.styled';
 import { toast, ToastContainer } from 'react-toastify';
+import { SearchForm, SearchFormInput, SearchFormWrap } from './SearchBar.styled';
 
-const Searchbar = ({ onSubmit }) => {
+const SearchBar = ({ onSubmit }) => {
   const [input, setInput] = useState('');
 
   const handleSubmit = e => {
@@ -46,4 +42,4 @@ const Searchbar = ({ onSubmit }) => {
   );
 };
 
-export default Searchbar;
+export default SearchBar;
